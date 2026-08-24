@@ -1,181 +1,962 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <style>
-      .left h2{
-        font-size: 18px;
-        /* white-space: nowrap; */
-        color: white;
-        padding-left: 65px;
-        margin-bottom: 10px;
-      }
-      .searchbox input{
-        margin-left: 65px;
-        padding: 10px 0;
-      }
-      .card #remove , .card #add{
-    background-color: transparent;
-    border-radius: 50%;
-    color: rgba(255, 255, 255, 0.511);
-    border: none;
-    font-size: 30px;
-    margin-left: 90%;
-  }
-  @media (max-width:600px) {
-    .left{
-    height: 40vh;
-  }
-  }
-    </style>
-</head>
-<body>
-    <div id="main">
-      <div class="menu">
-        <i id="menubtn" class="ri-menu-fold-fill"></i>
-      </div>
-        <div class="left">
-      
-            <a href="/">
-              <button>
-                <i class="ri-home-4-fill"></i>
-                <p>Home</p>
-              </button>
-            </a>
-              <button id="play">
-                <i class="ri-play-list-line"></i>
-                <p>Create Playlist</p>
-                <!-- <i class="ri-add-box-fill"></i> -->
-              </button>
-            <form id="playlist" action="/createplaylist" method="POST">
-              <input id="c-playlist" type="text" name="name" placeholder="Playlist Name" required>
-              <button  id="c-btn" type="submit">Create Playlist</button>
-            </form>
-  
-            <h2>PLAYLIST NAME: <%= playlist.name %></h2>
-             <div class="searchbox">
-                  <input id="searchInput" style="color: black;" type="text" placeholder="Enter music title">
-          <button style="display: none;" id="btn" onclick="searchSong()" style="color: black;">search</button>
-              </div>
-              <form action="/playlist/<%= playlist._id %>/delete" method="POST">
-                <button style="font-size: 12px; padding-left: 40%;" type="submit">Delete Playlist<i class="ri-delete-bin-fill"></i></button>
-              </form>
-              
-          </div>
-        <div class="right">
-            <div class="music">
-                
-            <% playlist.songs.forEach(function(song) { %>
-                <div class="card" onclick="songCardClicked('<%= song.filename %>')">
-                    <div class="img">
-                      <img src="/poster/<%=song.poster%>">
-                      <button>
-                        <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
-                      </button>
-                    </div>
-                    <div class="textos">
-                      <h2><%=song.title%></h2>
-                      <p><%=song.artist%></p>
-                    </div>
-                    <form action="/like/<%= song._id %>" method="POST">
-                      
-                    </form>
-                    <button id="remove"  onclick="removeSongFromPlaylist('<%= playlist._id %>', '<%= song._id %>')"><i class="ri-close-circle-fill"></i></button>
-                  </div>
-              <% }) %>
-              <div class="searchsong">
-        
-                <div class="music musi">
 
-                </div>
-              </div>
-              
-              <audio src="/stream/" controls></audio>
+    <title><%= playlist.name %> • Aksxil Music</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div class="menu">
+        <i id="menubtn" class="ri-menu-fill"></i>
+    </div>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="left">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="ri-spotify-fill"></i>
             </div>
 
-            
+            <h2>
+                Aksxil<span>Music</span>
+            </h2>
+
         </div>
-  
-        
-    </div>
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-  async function searchSong() {
-    const result = await axios.post('/search', {
-      search: document.querySelector('input').value
-    })
-
-    let clutter = ''
-
-    result.data.songs.forEach(song => {
-      clutter += ` <div class="card" onclick="songCardClicked('${song.filename}')">
-      <div class="img">
-        <img src="/poster/${song.poster}">
-        <button>
-          <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
-        </button>
-      </div>
-      <div class="textos">
-        <h2>${song.title}</h2>
-        <p>${song.artist}</p>
-      </div>
-      <form action="/playlist/<%= playlist._id %>/addsong/${song._id }" method="POST">
-        <button class="wobble-button" type="submit">Add To Playlist</button>
-      </form>
-    </div>`
-    });
-
-    document.querySelector('.musi').innerHTML = clutter
 
 
+        <nav class="sidebar-nav">
 
-  }
+            <a href="/">
+                <button>
+                    <i class="ri-home-5-fill"></i>
+                    <p>Home</p>
+                </button>
+            </a>
 
-  function songCardClicked(filename) {
-    document.querySelector('audio').setAttribute('src', `/stream/${filename}`)
-    document.querySelector('audio').play()
-  }
 
-  const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('btn');
+            <a href="/search">
+                <button>
+                    <i class="ri-search-2-fill"></i>
+                    <p>Search</p>
+                </button>
+            </a>
 
-// Add an event listener to the input field
-searchInput.addEventListener('keyup', function(event) {
-    // Check if the "Enter" key is pressed
-    if (event.key === 'Enter') {
-        // Simulate a click on the search button
-        searchButton.click();
-    }
-});
-// Assuming you have a function like this in your client-side code
 
-async function removeSongFromPlaylist(playlistId, songId) {
-  try {
-    await axios.post(`/playlist/${playlistId}/removesong/${songId}`);
-    // Assuming you want to refresh the page after removing the song
-    window.location.reload();
-  } catch (error) {
-    console.error(error);
-    // Handle the error as needed
-  }
-}
-document.querySelector("#menubtn").addEventListener("click", function() {
-    var leftElement = document.querySelector(".left");
-    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
-        leftElement.style.top = "-100%";
-    } else {
-        leftElement.style.top = "0";
-    }
-});
+            <a href="/playlist">
+                <button class="active">
+                    <i class="ri-play-list-2-fill"></i>
+                    <p>Playlists</p>
+                </button>
+            </a>
 
+
+            <a href="/liked">
+                <button>
+                    <i class="ri-heart-3-fill liked-icon"></i>
+                    <p>Liked Songs</p>
+                </button>
+            </a>
+
+        </nav>
+
+
+        <!-- CURRENT PLAYLIST -->
+
+        <div class="current-playlist">
+
+            <div class="current-playlist-cover">
+                <i class="ri-music-2-fill"></i>
+            </div>
+
+            <div>
+
+                <span>NOW VIEWING</span>
+
+                <p>
+                    <%= playlist.name %>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <a href="/Logout">
+
+                <button class="logout-btn">
+
+                    <i class="ri-logout-box-r-line"></i>
+
+                    <p>Logout</p>
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="right playlist-detail-page">
+
+        <div class="playlist-detail-content">
+
+
+            <!-- ================= PLAYLIST HERO ================= -->
+
+            <section class="playlist-hero">
+
+                <div class="playlist-hero-cover">
+
+                    <div class="playlist-hero-gradient">
+                        <i class="ri-music-2-fill"></i>
+                    </div>
+
+                </div>
+
+
+                <div class="playlist-hero-info">
+
+                    <span class="hero-label">
+                        PLAYLIST
+                    </span>
+
+                    <h1>
+                        <%= playlist.name %>
+                    </h1>
+
+                    <p>
+                        <%= playlist.songs.length %>
+                        <%= playlist.songs.length === 1 ? "song" : "songs" %>
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ACTIONS ================= -->
+
+            <div class="playlist-actions">
+
+                <button
+                    class="big-play-btn"
+                    onclick="playFirstSong()"
+                >
+                    <i class="ri-play-fill"></i>
+                </button>
+
+
+                <!-- Create playlist -->
+
+                <button
+                    class="outline-action"
+                    id="play"
+                >
+                    <i class="ri-add-line"></i>
+
+                    <span>
+                        New Playlist
+                    </span>
+                </button>
+
+
+                <!-- Delete playlist -->
+
+                <form
+                    action="/playlist/<%= playlist._id %>/delete"
+                    method="POST"
+                >
+
+                    <button
+                        class="delete-playlist-btn"
+                        type="submit"
+                        onclick="return confirm('Delete this playlist?')"
+                    >
+                        <i class="ri-delete-bin-6-line"></i>
+
+                        <span>
+                            Delete
+                        </span>
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ================= CREATE PLAYLIST ================= -->
+
+            <form
+                id="playlist"
+                action="/createplaylist"
+                method="POST"
+                class="create-playlist-form"
+            >
+
+                <div class="create-playlist-header">
+
+                    <div>
+                        <span>CREATE</span>
+
+                        <h3>
+                            New Playlist
+                        </h3>
+                    </div>
+
+                    <button
+                        type="button"
+                        onclick="closePlaylistForm()"
+                    >
+                        <i class="ri-close-line"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="create-playlist-input">
+
+                    <i class="ri-play-list-add-line"></i>
+
+                    <input
+                        id="c-playlist"
+                        type="text"
+                        name="name"
+                        placeholder="Give your playlist a name"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    id="c-btn"
+                    type="submit"
+                >
+                    Create Playlist
+                </button>
+
+            </form>
+
+
+            <!-- ================= ADD SONG SEARCH ================= -->
+
+            <section class="add-song-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span>
+                            ADD MUSIC
+                        </span>
+
+                        <h2>
+                            Add songs to this playlist
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="playlist-search">
+
+                    <i class="ri-search-2-line"></i>
+
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Search songs or artists..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        id="btn"
+                        onclick="searchSong()"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+
+                <div class="search-results">
+
+                    <div class="search-results-header">
+
+                        <h3>
+                            Search Results
+                        </h3>
+
+                    </div>
+
+                    <div class="music musi">
+
+                        <div class="search-placeholder">
+
+                            <i class="ri-search-line"></i>
+
+                            <p>
+                                Search for music to add to your playlist
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= CURRENT SONGS ================= -->
+
+            <section class="playlist-tracks">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span>
+                            YOUR MUSIC
+                        </span>
+
+                        <h2>
+                            Songs in this playlist
+                        </h2>
+
+                    </div>
+
+                    <span class="track-count">
+                        <%= playlist.songs.length %>
+                    </span>
+
+                </div>
+
+
+                <div class="track-list">
+
+                    <% if (playlist.songs.length === 0) { %>
+
+                        <div class="playlist-no-songs">
+
+                            <div class="no-songs-icon">
+                                <i class="ri-music-2-line"></i>
+                            </div>
+
+                            <h3>
+                                This playlist is empty
+                            </h3>
+
+                            <p>
+                                Search for songs above and add them to your playlist.
+                            </p>
+
+                        </div>
+
+                    <% } %>
+
+
+                    <% playlist.songs.forEach(function(song, index) { %>
+
+                        <div
+                            class="track-row"
+                            onclick="songCardClicked(
+                                '<%= song.filename %>',
+                                '<%= song.title %>',
+                                '<%= song.artist %>',
+                                '<%= song.poster %>'
+                            )"
+                        >
+
+                            <div class="track-number">
+
+                                <span class="number">
+                                    <%= index + 1 %>
+                                </span>
+
+                                <i class="ri-play-fill"></i>
+
+                            </div>
+
+
+                            <div class="track-cover">
+
+                                <img
+                                    src="/poster/<%= song.poster %>"
+                                    alt="<%= song.title %>"
+                                >
+
+                            </div>
+
+
+                            <div class="track-info">
+
+                                <h3>
+                                    <%= song.title %>
+                                </h3>
+
+                                <p>
+                                    <%= song.artist %>
+                                </p>
+
+                            </div>
+
+
+                            <div class="track-actions">
+
+                                <form
+                                    action="/like/<%= song._id %>"
+                                    method="POST"
+                                    onclick="event.stopPropagation()"
+                                >
+                                    <button type="submit">
+                                        <i class="ri-heart-3-line"></i>
+                                    </button>
+                                </form>
+
+
+                                <button
+                                    type="button"
+                                    class="remove-track"
+                                    onclick="
+                                        event.stopPropagation();
+                                        removeSongFromPlaylist(
+                                            '<%= playlist._id %>',
+                                            '<%= song._id %>'
+                                        )
+                                    "
+                                >
+                                    <i class="ri-close-line"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    <% }) %>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- ================= MUSIC PLAYER ================= -->
+
+        <div class="player">
+
+            <div class="player-left">
+
+                <div class="player-cover">
+
+                    <i class="ri-music-fill"></i>
+
+                </div>
+
+                <div class="player-info">
+
+                    <h3 id="playerTitle">
+                        Nothing playing
+                    </h3>
+
+                    <p id="playerArtist">
+                        Select a song
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="player-center">
+
+                <div class="player-controls">
+
+                    <button>
+                        <i class="ri-skip-back-fill"></i>
+                    </button>
+
+                    <button
+                        class="play-main"
+                        onclick="togglePlayer()"
+                    >
+                        <i
+                            id="playerPlayIcon"
+                            class="ri-play-fill"
+                        ></i>
+                    </button>
+
+                    <button>
+                        <i class="ri-skip-forward-fill"></i>
+                    </button>
+
+                </div>
+
+                <audio
+                    id="audioPlayer"
+                    controls
+                ></audio>
+
+            </div>
+
+
+            <div class="player-right">
+
+                <i class="ri-volume-up-line"></i>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
+    integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
 </script>
 
+
+<script>
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const audio =
+    document.querySelector("#audioPlayer");
+
+const searchInput =
+    document.querySelector("#searchInput");
+
+const searchButton =
+    document.querySelector("#btn");
+
+
+/* =====================================================
+   PLAY SONG
+===================================================== */
+
+function songCardClicked(
+    filename,
+    title,
+    artist,
+    poster
+) {
+
+    audio.setAttribute(
+        "src",
+        `/stream/${filename}`
+    );
+
+    audio.play();
+
+
+    document.querySelector("#playerTitle")
+        .textContent = title;
+
+
+    document.querySelector("#playerArtist")
+        .textContent = artist;
+
+
+    document.querySelector(".player-cover").innerHTML = `
+        <img
+            src="/poster/${poster}"
+            alt="${title}"
+        >
+    `;
+
+
+    document.querySelector("#playerPlayIcon")
+        .className = "ri-pause-fill";
+
+}
+
+
+/* =====================================================
+   PLAY FIRST SONG
+===================================================== */
+
+function playFirstSong() {
+
+    <% if (playlist.songs.length > 0) { %>
+
+        songCardClicked(
+            "<%= playlist.songs[0].filename %>",
+            "<%= playlist.songs[0].title %>",
+            "<%= playlist.songs[0].artist %>",
+            "<%= playlist.songs[0].poster %>"
+        );
+
+    <% } %>
+
+}
+
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+function togglePlayer() {
+
+    if (!audio.src) return;
+
+
+    if (audio.paused) {
+
+        audio.play();
+
+        document.querySelector("#playerPlayIcon")
+            .className = "ri-pause-fill";
+
+    } else {
+
+        audio.pause();
+
+        document.querySelector("#playerPlayIcon")
+            .className = "ri-play-fill";
+
+    }
+
+}
+
+
+audio.addEventListener("play", function () {
+
+    document.querySelector("#playerPlayIcon")
+        .className = "ri-pause-fill";
+
+});
+
+
+audio.addEventListener("pause", function () {
+
+    document.querySelector("#playerPlayIcon")
+        .className = "ri-play-fill";
+
+});
+
+
+/* =====================================================
+   SEARCH SONGS
+===================================================== */
+
+async function searchSong() {
+
+    const query =
+        searchInput.value.trim();
+
+
+    if (!query) {
+
+        searchInput.focus();
+
+        return;
+
+    }
+
+
+    const resultsContainer =
+        document.querySelector(".musi");
+
+
+    resultsContainer.innerHTML = `
+        <div class="search-loading">
+
+            <i class="ri-loader-4-line"></i>
+
+            <p>
+                Searching music...
+            </p>
+
+        </div>
+    `;
+
+
+    try {
+
+        const result =
+            await axios.post("/search", {
+                search: query
+            });
+
+
+        const songs =
+            result.data.songs || [];
+
+
+        let clutter = "";
+
+
+        if (songs.length === 0) {
+
+            resultsContainer.innerHTML = `
+                <div class="search-placeholder">
+
+                    <i class="ri-music-line"></i>
+
+                    <p>
+                        No songs found.
+                        Try another search.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        songs.forEach(song => {
+
+            clutter += `
+
+                <div class="add-song-card">
+
+                    <div
+                        class="add-song-cover"
+                        onclick="songCardClicked(
+                            '${escapeValue(song.filename)}',
+                            '${escapeValue(song.title)}',
+                            '${escapeValue(song.artist)}',
+                            '${escapeValue(song.poster)}'
+                        )"
+                    >
+
+                        <img
+                            src="/poster/${song.poster}"
+                            alt="${escapeValue(song.title)}"
+                        >
+
+                        <div class="add-song-play">
+                            <i class="ri-play-fill"></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="add-song-info">
+
+                        <h3>
+                            ${song.title}
+                        </h3>
+
+                        <p>
+                            ${song.artist}
+                        </p>
+
+                    </div>
+
+
+                    <form
+                        action="/playlist/<%= playlist._id %>/addsong/${song._id}"
+                        method="POST"
+                        onclick="event.stopPropagation()"
+                    >
+
+                        <button
+                            class="add-song-btn"
+                            type="submit"
+                        >
+                            <i class="ri-add-line"></i>
+
+                            <span>
+                                Add
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            `;
+
+        });
+
+
+        resultsContainer.innerHTML =
+            clutter;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        resultsContainer.innerHTML = `
+
+            <div class="search-placeholder">
+
+                <i class="ri-error-warning-line"></i>
+
+                <p>
+                    Something went wrong.
+                    Please try again.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   ENTER TO SEARCH
+===================================================== */
+
+searchInput.addEventListener(
+    "keyup",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            searchButton.click();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   REMOVE SONG
+===================================================== */
+
+async function removeSongFromPlaylist(
+    playlistId,
+    songId
+) {
+
+    const confirmed =
+        confirm(
+            "Remove this song from the playlist?"
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        await axios.post(
+            `/playlist/${playlistId}/removesong/${songId}`
+        );
+
+
+        window.location.reload();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to remove the song."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE PLAYLIST FORM
+===================================================== */
+
+const playlistForm =
+    document.querySelector("#playlist");
+
+
+document.querySelector("#play")
+    .addEventListener("click", function() {
+
+        playlistForm.classList.toggle(
+            "show"
+        );
+
+    });
+
+
+function closePlaylistForm() {
+
+    playlistForm.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+document
+    .querySelector("#menubtn")
+    .addEventListener("click", function() {
+
+        document
+            .querySelector(".left")
+            .classList.toggle(
+                "mobile-open"
+            );
+
+    });
+
+
+/* =====================================================
+   ESCAPE VALUES
+===================================================== */
+
+function escapeValue(value) {
+
+    return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, "&quot;")
+        .replace(/\n/g, "\\n");
+
+}
+
+</script>
 
 </body>
 </html>

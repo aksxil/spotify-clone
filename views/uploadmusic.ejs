@@ -1,14 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=c, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Music — Spotify Clone</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-<body>
-  <form action="/uploadMusic" enctype="multipart/form-data" method="post">
-    <input type="file" name="song" multiple>
-    <input type="submit">
-  </form>
+
+<body class="upload-page">
+
+    <main class="upload-container">
+
+        <!-- Background Glow -->
+        <div class="upload-glow upload-glow-one"></div>
+        <div class="upload-glow upload-glow-two"></div>
+
+        <section class="upload-card">
+
+            <!-- Header -->
+            <div class="upload-header">
+
+                <div class="upload-logo">
+                    <i class="ri-spotify-fill"></i>
+                </div>
+
+                <div>
+                    <span class="upload-label">MUSIC LIBRARY</span>
+                    <h1>Upload Music</h1>
+                </div>
+
+            </div>
+
+
+            <!-- Upload Area -->
+            <form
+                action="/uploadMusic"
+                enctype="multipart/form-data"
+                method="post"
+                class="upload-form"
+            >
+
+                <label for="song" class="drop-zone">
+
+                    <div class="upload-icon">
+                        <i class="ri-upload-cloud-2-line"></i>
+                    </div>
+
+                    <h2>Select your music</h2>
+
+                    <p>
+                        Choose one or multiple audio files
+                        from your device.
+                    </p>
+
+                    <span class="choose-files">
+                        <i class="ri-folder-open-line"></i>
+                        Choose Files
+                    </span>
+
+                    <input
+                        id="song"
+                        type="file"
+                        name="song"
+                        multiple
+                        accept="audio/*"
+                        required
+                    >
+
+                    <div class="selected-files" id="selectedFiles">
+                        No files selected
+                    </div>
+
+                </label>
+
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="upload-button"
+                >
+                    <i class="ri-upload-2-line"></i>
+                    <span>Upload Music</span>
+                </button>
+
+            </form>
+
+
+            <!-- Info -->
+            <div class="upload-info">
+
+                <div>
+                    <i class="ri-music-2-line"></i>
+
+                    <span>
+                        MP3, WAV, M4A and other audio formats
+                    </span>
+                </div>
+
+                <div>
+                    <i class="ri-stack-line"></i>
+
+                    <span>
+                        Multiple files supported
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- Back -->
+            <a href="/" class="back-home">
+                <i class="ri-arrow-left-line"></i>
+                Back to Home
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const fileInput = document.getElementById("song");
+        const selectedFiles = document.getElementById("selectedFiles");
+
+        fileInput.addEventListener("change", function () {
+
+            const files = Array.from(this.files);
+
+            if (files.length === 0) {
+
+                selectedFiles.textContent = "No files selected";
+
+                selectedFiles.classList.remove("has-files");
+
+                return;
+            }
+
+            if (files.length === 1) {
+
+                selectedFiles.textContent =
+                    files[0].name;
+
+            } else {
+
+                selectedFiles.textContent =
+                    `${files.length} music files selected`;
+
+            }
+
+            selectedFiles.classList.add("has-files");
+
+        });
+
+    </script>
+
 </body>
 </html>

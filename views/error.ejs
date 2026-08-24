@@ -1,3 +1,98 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Error — Spotify Clone</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/stylesheets/style.css"
+    >
+</head>
+
+<body class="error-page">
+
+    <main class="error-container">
+
+        <!-- Background Glow -->
+        <div class="error-glow error-glow-one"></div>
+        <div class="error-glow error-glow-two"></div>
+
+        <section class="error-card">
+
+            <!-- Icon -->
+            <div class="error-icon">
+                <i class="ri-error-warning-line"></i>
+            </div>
+
+            <!-- Status -->
+            <div class="error-status">
+                ERROR <span><%= error.status || 500 %></span>
+            </div>
+
+            <!-- Message -->
+            <h1>
+                <%= message || "Something went wrong" %>
+            </h1>
+
+            <p class="error-description">
+                We couldn't complete your request.
+                Please try again or go back to the home page.
+            </p>
+
+            <!-- Actions -->
+            <div class="error-actions">
+
+                <a href="/" class="error-home">
+                    <i class="ri-home-4-line"></i>
+                    <span>Back to Home</span>
+                </a>
+
+                <button
+                    onclick="window.location.reload()"
+                    class="error-retry"
+                >
+                    <i class="ri-refresh-line"></i>
+                    <span>Try Again</span>
+                </button>
+
+            </div>
+
+            <!-- Technical Details -->
+            <% if (error && error.stack) { %>
+
+                <details class="error-details">
+
+                    <summary>
+                        <i class="ri-code-s-slash-line"></i>
+                        Technical Details
+                    </summary>
+
+                    <pre><%= error.stack %></pre>
+
+                </details>
+
+            <% } %>
+
+            <!-- Footer -->
+            <div class="error-footer">
+                <i class="ri-spotify-fill"></i>
+                <span>Spotify Clone</span>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

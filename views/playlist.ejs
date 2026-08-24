@@ -1,61 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="stylesheets/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <title>Playlists • Aksxil Music</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
+
 <body>
-    <div id="main">
-        <div class="left">
+
+<div id="main">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="left">
+
+        <!-- Brand -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="ri-spotify-fill"></i>
+            </div>
+
+            <h2>
+                Aksxil<span>Music</span>
+            </h2>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <nav class="sidebar-nav">
+
             <a href="/">
                 <button>
-                    <i class="ri-home-4-fill"></i>
+                    <i class="ri-home-5-fill"></i>
                     <p>Home</p>
-                  </button>
+                </button>
             </a>
+
+
             <a href="/search">
-              <button>
-                <i class="ri-search-eye-line"></i>
-                <p>Search</p>
-              </button>
+                <button>
+                    <i class="ri-search-2-fill"></i>
+                    <p>Search</p>
+                </button>
             </a>
+
+
             <a href="/playlist">
-              <button>
-                <i class="ri-play-list-line"></i>
-                <p>Create Playlist</p>
-              </button>
+                <button class="active">
+                    <i class="ri-play-list-2-fill"></i>
+                    <p>Playlists</p>
+                </button>
             </a>
+
+
             <a href="/liked">
-              <button>
-                <i style="color: red;" class="ri-heart-3-fill"></i>
-                <p>Liked Songs</p>
-              </button>
+                <button>
+                    <i class="ri-heart-3-fill liked-icon"></i>
+                    <p>Liked Songs</p>
+                </button>
             </a>
-            <a  href="/Logout">
-              <button style="margin-top: 230px;" >
-                <i class="ri-logout-box-line"></i>
-                <p>Logout</p>
-              </button>
-            </a>
-          </div>
-        <div class="right">
-            <% playlists.forEach(function(playlist) { %>
-                <div class="playlist">
-                  <h2><%= playlist.name %></h2>
-                  <ul>
-                    <% playlist.songs.forEach(function(song) { %>
-                      <li><%= song.title %> - <%= song.artist %></li>
-                    <% }) %>
-                  </ul>
-                </div>
-              <% }) %>
-              
-              
+
+        </nav>
+
+
+        <!-- Playlist Info -->
+
+        <div class="playlist-sidebar-info">
+
+            <div class="playlist-sidebar-icon">
+                <i class="ri-music-2-fill"></i>
+            </div>
+
+            <div>
+                <p>Your Library</p>
+                <span>
+                    Manage your playlists
+                </span>
+            </div>
+
         </div>
+
+
+        <!-- Logout -->
+
+        <div class="sidebar-bottom">
+
+            <a href="/Logout">
+
+                <button class="logout-btn">
+
+                    <i class="ri-logout-box-r-line"></i>
+
+                    <p>Logout</p>
+
+                </button>
+
+            </a>
+
+        </div>
+
     </div>
-    
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="right playlist-page">
+
+        <div class="playlist-content">
+
+            <!-- Header -->
+
+            <div class="playlist-page-header">
+
+                <div class="playlist-header-icon">
+                    <i class="ri-play-list-2-fill"></i>
+                </div>
+
+                <div>
+
+                    <p class="small-label">
+                        YOUR LIBRARY
+                    </p>
+
+                    <h1>
+                        Playlists
+                    </h1>
+
+                    <p>
+                        All your created playlists in one place.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Playlist Grid -->
+
+            <div class="playlist-grid">
+
+                <% playlists.forEach(function(playlist) { %>
+
+                    <div class="playlist-card">
+
+                        <!-- Playlist Cover -->
+
+                        <div class="playlist-cover">
+
+                            <div class="playlist-cover-gradient">
+                                <i class="ri-music-2-fill"></i>
+                            </div>
+
+                            <div class="playlist-play">
+
+                                <i class="ri-play-fill"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Playlist Details -->
+
+                        <div class="playlist-card-content">
+
+                            <h2>
+                                <%= playlist.name %>
+                            </h2>
+
+                            <p>
+                                <%= playlist.songs.length %>
+                                <%= playlist.songs.length === 1 ? "song" : "songs" %>
+                            </p>
+
+                        </div>
+
+
+                        <!-- Songs -->
+
+                        <div class="playlist-songs">
+
+                            <% playlist.songs.forEach(function(song) { %>
+
+                                <div class="playlist-song">
+
+                                    <div class="song-number">
+                                        <i class="ri-music-fill"></i>
+                                    </div>
+
+                                    <div class="song-info">
+
+                                        <h3>
+                                            <%= song.title %>
+                                        </h3>
+
+                                        <p>
+                                            <%= song.artist %>
+                                        </p>
+
+                                    </div>
+
+                                    <i class="ri-more-2-fill song-more"></i>
+
+                                </div>
+
+                            <% }) %>
+
+
+                            <% if (playlist.songs.length === 0) { %>
+
+                                <div class="empty-playlist">
+
+                                    <i class="ri-music-line"></i>
+
+                                    <p>
+                                        This playlist is empty
+                                    </p>
+
+                                </div>
+
+                            <% } %>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+
+                <% if (playlists.length === 0) { %>
+
+                    <div class="playlist-empty-state">
+
+                        <div class="playlist-empty-icon">
+
+                            <i class="ri-play-list-2-line"></i>
+
+                        </div>
+
+                        <h2>
+                            No playlists yet
+                        </h2>
+
+                        <p>
+                            Create your first playlist and start adding your favorite songs.
+                        </p>
+
+                        <a href="/">
+                            <button>
+                                <i class="ri-add-line"></i>
+                                Create Playlist
+                            </button>
+                        </a>
+
+                    </div>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

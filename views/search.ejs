@@ -1,175 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-     <link rel="stylesheet" href="/stylesheets/style.css">
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-       
+  <title>Search • Aksxil Music</title>
 
-  .searchbox{
-    /* position: absolute; */
-    top: 20px;
-    height: 50px;
-    width: 100%;
-    /* background-color: red; */
-    /* padding: 0 20px; *
-    /* background-color: red; */
-  }
-  .searchbox button{
-    background-color: white;
-  }
-  .searchbox input{
-    /* background-color: rgb(36, 166, 0); */
-    padding: 12px 30px;
-    border-radius: 10px;
-    border: none;
-    color: white;
-  }
-  .searchbox #btn{
-    padding: 8px 20px;
-    border-radius: 10px;
-    font-size: 18px;
-    background-color: rgb(85, 85, 85);
-    color: white;
-  }
-  
-  @media (max-width:600px) {
-    .left{
-    height: 40vh;
-    top: 0;
-  }
-  }
-  
- 
-  
-    </style>
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
+
 <body>
+
   <div id="main">
+
+    <!-- Mobile Menu Button -->
     <div class="menu">
-      <i id="menubtn" class="ri-menu-fold-fill"></i>
+      <i id="menubtn" class="ri-menu-fill"></i>
     </div>
-    <div class="left">
-        
-      <a href="/">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="left">
+
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="ri-spotify-fill"></i>
+        </div>
+
+        <h2>Aksxil<span>Music</span></h2>
+      </div>
+
+
+      <nav class="sidebar-nav">
+
+        <a href="/">
           <button>
-              <i class="ri-home-4-fill"></i>
-              <p>Home</p>
-            </button>
-      </a>
-      <a href="/search">
-        <button>
-          <i class="ri-search-eye-line"></i>
-          <p>Search</p>
-        </button>
-      </a>
-      <div class="searchbox">
-        <input id="searchInput" style="color: black;" type="text" placeholder="Enter music title">
-<button style="display: none;" id="btn" onclick="searchSong()" style="color: black;">search</button>
-    </div>
-      <a href="/">
-        <button>
-          <i class="ri-play-list-line"></i>
-          <p>Create Playlist</p>
-        </button>
-      </a>
-      <a href="/liked">
-        <button>
-          <i style="color: red;" class="ri-heart-3-fill"></i>
-          <p>Liked Songs</p>
-        </button>
-      </a>
-      <a  href="/Logout">
-        <button  >
-          <i class="ri-logout-box-line"></i>
-          <p>Logout</p>
-        </button>
-      </a>
-    </div>
-    <div class="right">
-      
-        
-      <div class="music">
+            <i class="ri-home-5-fill"></i>
+            <p>Home</p>
+          </button>
+        </a>
+
+        <a href="/search">
+          <button class="active">
+            <i class="ri-search-2-fill"></i>
+            <p>Search</p>
+          </button>
+        </a>
+
+        <a href="/">
+          <button>
+            <i class="ri-play-list-2-fill"></i>
+            <p>Create Playlist</p>
+          </button>
+        </a>
+
+        <a href="/liked">
+          <button>
+            <i class="ri-heart-3-fill liked-icon"></i>
+            <p>Liked Songs</p>
+          </button>
+        </a>
+
+      </nav>
+
+
+      <!-- Search -->
+
+      <div class="sidebar-search">
+
+        <div class="search-title">
+          <i class="ri-search-line"></i>
+          <span>Find your music</span>
+        </div>
+
+        <div class="search-input-wrapper">
+
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Song, artist..."
+            autocomplete="off"
+          >
+
+          <button id="btn" onclick="searchSong()">
+            <i class="ri-arrow-right-line"></i>
+          </button>
+
+        </div>
 
       </div>
-      <audio src="/stream/" controls></audio>
-      
-  </div>
-  </div>
-    
 
-    
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <!-- Bottom -->
 
-    <script>
-       document.querySelector("#menubtn").addEventListener("click", function() {
-    var leftElement = document.querySelector(".left");
-    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
-        leftElement.style.top = "-100%";
-    } else {
-        leftElement.style.top = "0";
-    }
-});
-      async function searchSong() {
-        const result = await axios.post('/search', {
-          search: document.querySelector('input').value
-        })
-  
-        let clutter = ''
-  
-        result.data.songs.forEach(song => {
-          clutter += ` <div class="card" onclick="songCardClicked('${song.filename}')">
-          <div class="img">
-            <img src="/poster/${song.poster}">
+      <div class="sidebar-bottom">
+
+        <a href="/Logout">
+          <button class="logout-btn">
+            <i class="ri-logout-box-r-line"></i>
+            <p>Logout</p>
+          </button>
+        </a>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="right">
+
+      <div class="content">
+
+        <!-- Header -->
+
+        <header class="page-header">
+
+          <div>
+            <p class="small-label">DISCOVER</p>
+
+            <h1>Search music</h1>
+
+            <p class="subtitle">
+              Find your favorite songs and artists.
+            </p>
+          </div>
+
+        </header>
+
+
+        <!-- Main Search -->
+
+        <div class="main-search">
+
+          <i class="ri-search-2-line"></i>
+
+          <input
+            id="mainSearchInput"
+            type="text"
+            placeholder="What do you want to listen to?"
+            autocomplete="off"
+          >
+
+          <button onclick="searchSong()">
+            Search
+          </button>
+
+        </div>
+
+
+        <!-- Search Result Heading -->
+
+        <div class="result-header">
+
+          <h2 id="resultTitle">
+            Start searching
+          </h2>
+
+          <span id="resultCount"></span>
+
+        </div>
+
+
+        <!-- Music Cards -->
+
+        <div class="music">
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              <i class="ri-music-2-fill"></i>
+            </div>
+
+            <h2>Search for a song</h2>
+
+            <p>
+              Type a song title or artist name above to discover music.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= MUSIC PLAYER ================= -->
+
+      <div class="player">
+
+        <div class="player-left">
+
+          <div class="player-cover">
+            <i class="ri-music-fill"></i>
+          </div>
+
+          <div class="player-info">
+
+            <h3 id="playerTitle">
+              Nothing playing
+            </h3>
+
+            <p id="playerArtist">
+              Choose a song to start listening
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="player-center">
+
+          <div class="player-controls">
+
             <button>
-              <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
+              <i class="ri-skip-back-fill"></i>
             </button>
+
+            <button
+              class="play-main"
+              onclick="togglePlayer()"
+            >
+              <i id="playerPlayIcon" class="ri-play-fill"></i>
+            </button>
+
+            <button>
+              <i class="ri-skip-forward-fill"></i>
+            </button>
+
           </div>
-          <div class="textos">
-            <h2>${song.title}</h2>
-            <p>${song.artist}</p>
-          </div>
-          
-        </div>`
+
+          <audio id="audioPlayer" controls></audio>
+
+        </div>
+
+
+        <div class="player-right">
+
+          <i class="ri-volume-up-line"></i>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- ================= AXIOS ================= -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
+    integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+
+
+  <script>
+
+    const audio = document.querySelector("#audioPlayer");
+
+    const searchInput =
+      document.querySelector("#searchInput");
+
+    const mainSearchInput =
+      document.querySelector("#mainSearchInput");
+
+    const resultTitle =
+      document.querySelector("#resultTitle");
+
+    const resultCount =
+      document.querySelector("#resultCount");
+
+
+    /* ================= SEARCH ================= */
+
+    async function searchSong() {
+
+      const value =
+        mainSearchInput.value.trim() ||
+        searchInput.value.trim();
+
+      if (!value) {
+        mainSearchInput.focus();
+        return;
+      }
+
+      resultTitle.innerHTML = "Searching...";
+
+      try {
+
+        const result = await axios.post("/search", {
+          search: value
         });
-  
-        document.querySelector('.music').innerHTML = clutter
-  
-  
-  
-      }
-  
-      function songCardClicked(filename) {
-        document.querySelector('audio').setAttribute('src', `/stream/${filename}`)
-        document.querySelector('audio').play()
-      }
 
-      const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('btn');
+        const songs = result.data.songs || [];
 
-    // Add an event listener to the input field
-    searchInput.addEventListener('keyup', function(event) {
-        // Check if the "Enter" key is pressed
-        if (event.key === 'Enter') {
-            // Simulate a click on the search button
-            searchButton.click();
+        let clutter = "";
+
+        if (songs.length === 0) {
+
+          clutter = `
+            <div class="empty-state">
+
+              <div class="empty-icon">
+                <i class="ri-search-line"></i>
+              </div>
+
+              <h2>No songs found</h2>
+
+              <p>
+                Try searching with another song or artist name.
+              </p>
+
+            </div>
+          `;
+
+        } else {
+
+          songs.forEach(song => {
+
+            clutter += `
+
+              <div
+                class="card"
+                onclick="songCardClicked(
+                  '${escapeValue(song.filename)}',
+                  '${escapeValue(song.title)}',
+                  '${escapeValue(song.artist)}',
+                  '${escapeValue(song.poster)}'
+                )"
+              >
+
+                <div class="img">
+
+                  <img
+                    src="/poster/${song.poster}"
+                    alt="${escapeValue(song.title)}"
+                  >
+
+                  <button
+                    class="card-play"
+                    onclick="event.stopPropagation(); songCardClicked(
+                      '${escapeValue(song.filename)}',
+                      '${escapeValue(song.title)}',
+                      '${escapeValue(song.artist)}',
+                      '${escapeValue(song.poster)}'
+                    )"
+                  >
+
+                    <i class="ri-play-fill"></i>
+
+                  </button>
+
+                </div>
+
+
+                <div class="textos">
+
+                  <h2>
+                    ${song.title}
+                  </h2>
+
+                  <p>
+                    ${song.artist}
+                  </p>
+
+                </div>
+
+              </div>
+
+            `;
+
+          });
+
         }
-    });
-    document.querySelector("#menubtn").addEventListener("click", function() {
-    var leftElement = document.querySelector(".left");
-    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
-        leftElement.style.top = "-100%";
-    } else {
-        leftElement.style.top = "0";
-    }
-});
 
-    </script>
+
+        document.querySelector(".music").innerHTML =
+          clutter;
+
+
+        resultTitle.innerHTML =
+          `Results for "${value}"`;
+
+        resultCount.innerHTML =
+          `${songs.length} ${songs.length === 1 ? "song" : "songs"}`;
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        document.querySelector(".music").innerHTML = `
+
+          <div class="empty-state error-state">
+
+            <div class="empty-icon">
+              <i class="ri-error-warning-line"></i>
+            </div>
+
+            <h2>Something went wrong</h2>
+
+            <p>
+              Unable to search right now. Please try again.
+            </p>
+
+          </div>
+
+        `;
+
+        resultTitle.innerHTML = "Search failed";
+
+      }
+
+    }
+
+
+    /* ================= PLAY SONG ================= */
+
+    function songCardClicked(
+      filename,
+      title,
+      artist,
+      poster
+    ) {
+
+      audio.setAttribute(
+        "src",
+        `/stream/${filename}`
+      );
+
+      audio.play();
+
+      document.querySelector("#playerTitle")
+        .textContent = title;
+
+      document.querySelector("#playerArtist")
+        .textContent = artist;
+
+
+      document.querySelector(".player-cover").innerHTML = `
+
+        <img
+          src="/poster/${poster}"
+          alt="${title}"
+        >
+
+      `;
+
+
+      document.querySelector("#playerPlayIcon")
+        .className = "ri-pause-fill";
+
+    }
+
+
+    /* ================= PLAYER ================= */
+
+    function togglePlayer() {
+
+      if (!audio.src) return;
+
+      if (audio.paused) {
+
+        audio.play();
+
+        document.querySelector("#playerPlayIcon")
+          .className = "ri-pause-fill";
+
+      } else {
+
+        audio.pause();
+
+        document.querySelector("#playerPlayIcon")
+          .className = "ri-play-fill";
+
+      }
+
+    }
+
+
+    audio.addEventListener("play", () => {
+
+      document.querySelector("#playerPlayIcon")
+        .className = "ri-pause-fill";
+
+    });
+
+
+    audio.addEventListener("pause", () => {
+
+      document.querySelector("#playerPlayIcon")
+        .className = "ri-play-fill";
+
+    });
+
+
+    /* ================= ENTER SEARCH ================= */
+
+    function handleEnter(event) {
+
+      if (event.key === "Enter") {
+
+        searchSong();
+
+      }
+
+    }
+
+
+    searchInput.addEventListener(
+      "keyup",
+      handleEnter
+    );
+
+    mainSearchInput.addEventListener(
+      "keyup",
+      handleEnter
+    );
+
+
+    /* ================= MOBILE MENU ================= */
+
+    document
+      .querySelector("#menubtn")
+      .addEventListener("click", function () {
+
+        const leftElement =
+          document.querySelector(".left");
+
+        leftElement.classList.toggle("mobile-open");
+
+      });
+
+
+    /* ================= ESCAPE VALUE ================= */
+
+    function escapeValue(value) {
+
+      return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, "&quot;")
+        .replace(/\n/g, "\\n");
+
+    }
+
+  </script>
+
 </body>
 </html>

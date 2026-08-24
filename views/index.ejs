@@ -3,230 +3,878 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="stylesheets/style.css">
 
-  <style>
-    #main{
-      background-color: black;
-    }
-    html::-webkit-scrollbar {
-  width: 5px;
-}
- 
-html::-webkit-scrollbar-track {
-  background: rgb(116, 116, 116);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
- 
-html::-webkit-scrollbar-thumb {
-  background: rgb(51, 255, 0);
-  border-radius: 20px;
-}
-    #playlist{
-      height: 8vh;
-      width:100%;
-      /* background-color: red; */
-      /* position: absolute; */
-      top: 40%;
-      display: none;
-      transition: all ease .5s;
-    }
-    #playlist input{
-      width: 100%;
-      padding: 10px 0;
-      border-radius: 10px;
-    }
-    #playlist button{
-      padding: 10px 20px;
-      width: 100%;
-      background-color: rgb(243, 243, 243);
-      font-size: 18px;
-      color: black;
-      display: none;
-    }
-    .playlists{
-      width: 100%;
-      /* background-color: gray; */
-      color: white;
-      padding-left: 60px;
-    }
-    .playlists h2{
-      font-size: 20px;
-    }
-    .playlists ul li{
-      list-style: none;
-      /* border: 1px solid white; */
-    }
-    .playlists ul li a{
-      text-decoration: none;
-      color: white;
-      font-size: 18px;
-    }
-    .playlists button{
-      padding: 0 30px;
-      margin-bottom: 5px;
-    }
-    .playlists button{
-      font-size: 18px;
-    }
-  </style>
+  <title>AKSXIL Music</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-<body>
-  
-  <div id="main">
-    <div class="menu">
-      <i id="menubtn" class="ri-menu-fold-fill"></i>
-    </div>
-    <div class="left">
-      
-      <a href="/">
-        <button>
-          <i class="ri-home-4-fill"></i>
-          <p>Home</p>
-        </button>
-      </a>
-      <a href="/search">
-        <button>
-          <i class="ri-search-eye-line"></i>
-          <p>Search</p>
-        </button>
-      </a>
-        <button id="play">
-          <i class="ri-play-list-line"></i>
-          <p>Create Playlist</p>
-          <!-- <i class="ri-add-box-fill"></i> -->
-        </button>
-      <form id="playlist" action="/createplaylist" method="POST">
-        <input id="cplaylist" type="text" name="name" placeholder="Playlist Name" required>
-        <button  id="cbtn" type="submit">Create Playlist</button>
-      </form>
-      <div class="playlists">
-        <h2>All Playlists</h2>
-        <ul>
-          <% playlists.forEach(function(playlist) { %>
-            <li>
-              <a href="/playlist/<%= playlist._id %>"><button>
-                <%= playlist.name %>
-              </button></a>
-            </li>
-          <% }) %>
-        </ul>
-      </div>
-      <a href="/liked">
-        <button>
-          <i style="color: red;" class="ri-heart-3-fill"></i>
-          <p>Liked Songs</p>
-        </button>
-      </a>
-      <p style="color: white; margin: 10px 20px;">Curently Playing song:</p>
-      <div id="song-details">
-       <img  src="https://play-lh.googleusercontent.com/cShys-AmJ93dB0SV8kE6Fl5eSaf4-qMMZdwEDKI5VEmKAXfzOqbiaeAsqqrEBCTdIEs=w240-h480-rw">
-       <div class="inbox">
-         <h2>Title:title</h2>
-       <p>Artist: artist</p>
-       </div>
-    </div>
-    
-      <a  href="/Logout">
-        <button style="margin-top: 30px;" >
-          <i class="ri-logout-box-line"></i>
-          <p>Logout</p>
-        </button>
-      </a>
-    </div>
-    <div class="right">
-     <div class="music">
-      <% currentUser.playlist[0].songs.forEach(function(song){%>
-        <div class="card" onclick="songCardClicked('<%= song.filename %>', '<%= song.title %>', '<%= song.artist %>', '<%= song.poster %>');">
-          <div class="img">
-            <img  src="/poster/<%=song.poster%>">
-            <button>
-              <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
-            </button>
-          </div>
-          <div class="textos">
-            <h2><%=song.title%></h2>
-            <p><%=song.artist%></p>
-          </div>
-          <form action="/like/<%= song._id %>" method="POST">
-            <button style="background-color: transparent; border: none; outline: none; font-size: 25px;" type="submit">
-              <% if (currentUser.likes.includes(song._id.toString())) { %>
-                <i style="color: red;" class="ri-heart-3-fill"></i>
-                
-              <% } else { %>
-                <i style="color: gray;" class="ri-heart-3-fill"></i>
-              <% } %>
-            </button>
-          </form>
-        </div>
-      
-      <%}) %>
-    
 
-      
-    
-      <audio src="" controls></audio> <!-- Remove the src attribute -->
-     </div>
-    </div>
+<body>
+
+  <div id="main">
+
+    <!-- ================= MOBILE HEADER ================= -->
+    <header class="mobile-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="ri-music-2-fill"></i>
+        </div>
+        <span>AKSXIL</span>
+      </div>
+
+      <button id="menubtn" class="mobile-menu-btn">
+        <i class="ri-menu-4-line"></i>
+      </button>
+    </header>
+
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="left" id="sidebar">
+
+      <div class="sidebar-top">
+
+        <!-- Logo -->
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="ri-music-2-fill"></i>
+          </div>
+
+          <div>
+            <h2>AKSXIL</h2>
+            <span>Music</span>
+          </div>
+        </div>
+
+
+        <!-- Navigation -->
+        <nav class="navigation">
+
+          <a href="/" class="nav-item active">
+            <i class="ri-home-5-fill"></i>
+            <span>Home</span>
+          </a>
+
+          <a href="/search" class="nav-item">
+            <i class="ri-search-line"></i>
+            <span>Search</span>
+          </a>
+
+          <button id="play" class="nav-item nav-button">
+            <i class="ri-add-line"></i>
+            <span>Create Playlist</span>
+          </button>
+
+          <a href="/liked" class="nav-item">
+            <i class="ri-heart-3-fill liked-icon"></i>
+            <span>Liked Songs</span>
+          </a>
+
+        </nav>
+
+
+        <!-- Create Playlist -->
+        <form
+          id="playlist"
+          action="/createplaylist"
+          method="POST"
+        >
+
+          <div class="playlist-input">
+
+            <input
+              id="cplaylist"
+              type="text"
+              name="name"
+              placeholder="Playlist name..."
+              required
+            >
+
+            <button id="cbtn" type="submit">
+              <i class="ri-check-line"></i>
+            </button>
+
+          </div>
+
+        </form>
+
+
+        <!-- Library -->
+        <div class="library">
+
+          <div class="library-header">
+            <h3>Your Library</h3>
+
+            <i
+              class="ri-add-line"
+              id="libraryAdd"
+            ></i>
+          </div>
+
+
+          <div class="playlists">
+
+            <% playlists.forEach(function(playlist) { %>
+
+              <a
+                href="/playlist/<%= playlist._id %>"
+                class="playlist-item"
+              >
+
+                <div class="playlist-icon">
+                  <i class="ri-play-list-2-fill"></i>
+                </div>
+
+                <span>
+                  <%= playlist.name %>
+                </span>
+
+              </a>
+
+            <% }) %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= SIDEBAR CURRENT SONG ================= -->
+
+      <div class="sidebar-bottom">
+
+        <div class="playing-label">
+          <span>NOW PLAYING</span>
+
+          <i class="ri-equalizer-2-line"></i>
+        </div>
+
+
+        <div id="song-details">
+
+          <div class="current-artwork">
+
+            <img
+              src="https://play-lh.googleusercontent.com/cShys-AmJ93dB0SV8kE6Fl5eSaf4-qMMZdwEDKI5VEmKAXfzOqbiaeAsqqrEBCTdIEs=w240-h480-rw"
+              alt="Currently playing"
+            >
+
+            <div class="artwork-overlay">
+              <i class="ri-music-2-fill"></i>
+            </div>
+
+          </div>
+
+
+          <div class="inbox">
+
+            <h2>Nothing playing</h2>
+
+            <p>Select a song</p>
+
+          </div>
+
+        </div>
+
+
+        <a href="/Logout" class="logout">
+
+          <i class="ri-logout-box-r-line"></i>
+
+          <span>Logout</span>
+
+        </a>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="right">
+
+      <!-- Top bar -->
+      <div class="topbar">
+
+        <div class="history-buttons">
+
+          <button>
+            <i class="ri-arrow-left-line"></i>
+          </button>
+
+          <button>
+            <i class="ri-arrow-right-line"></i>
+          </button>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+          <a href="/search" class="search-mini">
+            <i class="ri-search-line"></i>
+            <span>Search</span>
+          </a>
+
+          <div class="profile">
+
+            <div class="profile-avatar">
+              <i class="ri-user-3-fill"></i>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= CONTENT ================= -->
+
+      <section class="content">
+
+        <!-- Hero -->
+        <div class="hero">
+
+          <div class="hero-content">
+
+            <span class="hero-small">
+              YOUR MUSIC
+            </span>
+
+            <h1>
+              Good music.<br>
+              <span>Good mood.</span>
+            </h1>
+
+            <p>
+              Listen to your favorite tracks and discover
+              something new today.
+            </p>
+
+            <div class="hero-actions">
+
+              <a href="#songs" class="hero-play">
+                <i class="ri-play-fill"></i>
+                Play music
+              </a>
+
+              <a href="/liked" class="hero-secondary">
+                <i class="ri-heart-3-line"></i>
+                Liked songs
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <div class="hero-decoration">
+
+            <div class="hero-disc">
+
+              <div class="disc-center">
+                <i class="ri-music-2-fill"></i>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= SONG SECTION ================= -->
+
+        <div class="section-header" id="songs">
+
+          <div>
+            <span class="section-eyebrow">
+              YOUR COLLECTION
+            </span>
+
+            <h2>All Songs</h2>
+          </div>
+
+          <a href="/search" class="show-all">
+            Show all
+            <i class="ri-arrow-right-line"></i>
+          </a>
+
+        </div>
+
+
+        <div class="music">
+
+          <% currentUser.playlist[0].songs.forEach(function(song){ %>
+
+            <div
+              class="card"
+              onclick="songCardClicked(
+                '<%= song.filename %>',
+                '<%= song.title %>',
+                '<%= song.artist %>',
+                '<%= song.poster %>'
+              );"
+            >
+
+              <!-- Album artwork -->
+
+              <div class="img">
+
+                <img
+                  src="/poster/<%= song.poster %>"
+                  alt="<%= song.title %>"
+                  loading="lazy"
+                >
+
+                <div class="card-gradient"></div>
+
+                <button
+                  class="play-card"
+                  onclick="event.stopPropagation(); songCardClicked(
+                    '<%= song.filename %>',
+                    '<%= song.title %>',
+                    '<%= song.artist %>',
+                    '<%= song.poster %>'
+                  );"
+                >
+
+                  <i class="ri-play-fill"></i>
+
+                </button>
+
+              </div>
+
+
+              <!-- Song information -->
+
+              <div class="textos">
+
+                <h3 title="<%= song.title %>">
+                  <%= song.title %>
+                </h3>
+
+                <p title="<%= song.artist %>">
+                  <%= song.artist %>
+                </p>
+
+              </div>
+
+
+              <!-- Like -->
+
+              <form
+                action="/like/<%= song._id %>"
+                method="POST"
+                class="like-form"
+                onclick="event.stopPropagation();"
+              >
+
+                <button
+                  type="submit"
+                  class="like-button"
+                >
+
+                  <% if (currentUser.likes.includes(song._id.toString())) { %>
+
+                    <i class="ri-heart-3-fill liked"></i>
+
+                  <% } else { %>
+
+                    <i class="ri-heart-3-line"></i>
+
+                  <% } %>
+
+                </button>
+
+              </form>
+
+            </div>
+
+          <% }) %>
+
+        </div>
+
+
+        <!-- Bottom spacing -->
+
+        <div class="bottom-space"></div>
+
+      </section>
+
+
+      <!-- ================= CUSTOM PLAYER ================= -->
+
+      <div class="player">
+
+        <!-- Left -->
+
+        <div class="player-song">
+
+          <div class="player-art">
+
+            <img
+              id="playerPoster"
+              src="https://play-lh.googleusercontent.com/cShys-AmJ93dB0SV8kE6Fl5eSaf4-qMMZdwEDKI5VEmKAXfzOqbiaeAsqqrEBCTdIEs=w240-h480-rw"
+              alt="Song"
+            >
+
+          </div>
+
+
+          <div class="player-info">
+
+            <h4 id="playerTitle">
+              Nothing playing
+            </h4>
+
+            <p id="playerArtist">
+              Choose a song
+            </p>
+
+          </div>
+
+
+          <button class="player-like">
+            <i class="ri-heart-3-line"></i>
+          </button>
+
+        </div>
+
+
+        <!-- Center -->
+
+        <div class="player-center">
+
+          <div class="player-controls">
+
+            <button>
+              <i class="ri-shuffle-line"></i>
+            </button>
+
+            <button>
+              <i class="ri-skip-back-fill"></i>
+            </button>
+
+            <button
+              id="mainPlay"
+              class="main-play"
+            >
+              <i class="ri-play-fill"></i>
+            </button>
+
+            <button>
+              <i class="ri-skip-forward-fill"></i>
+            </button>
+
+            <button>
+              <i class="ri-repeat-2-line"></i>
+            </button>
+
+          </div>
+
+
+          <div class="progress-wrapper">
+
+            <span id="currentTime">
+              0:00
+            </span>
+
+            <input
+              id="progress"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+            >
+
+            <span id="duration">
+              0:00
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Right -->
+
+        <div class="player-volume">
+
+          <i class="ri-volume-up-line"></i>
+
+          <input
+            id="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- Actual audio element -->
+
+      <audio id="audio"></audio>
+
+    </main>
+
   </div>
-  <script loop src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
 
   <script>
-    document.querySelector("#menubtn").addEventListener("click", function() {
-    var leftElement = document.querySelector(".left");
-    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
-        leftElement.style.top = "-100%";
-    } else {
-        leftElement.style.top = "0";
-    }
-});
 
-    
+    const audio = document.querySelector("#audio");
+
+    const sidebar = document.querySelector("#sidebar");
+
+    const menuButton = document.querySelector("#menubtn");
+
+    const playlistButton = document.querySelector("#play");
+
+    const playlistForm = document.querySelector("#playlist");
+
+    const playlistInput = document.querySelector("#cplaylist");
+
+    const createButton = document.querySelector("#cbtn");
+
+    const mainPlay = document.querySelector("#mainPlay");
+
+    const progress = document.querySelector("#progress");
+
+    const volume = document.querySelector("#volume");
+
+    const currentTime = document.querySelector("#currentTime");
+
+    const duration = document.querySelector("#duration");
+
+    const playerTitle = document.querySelector("#playerTitle");
+
+    const playerArtist = document.querySelector("#playerArtist");
+
+    const playerPoster = document.querySelector("#playerPoster");
 
 
-    function songCardClicked(filename, title, artist, poster) {
-    document.querySelector('audio').setAttribute('src', `/stream/${filename}`);
-    document.querySelector('audio').play();
+    /* ==========================================
+       MOBILE MENU
+    ========================================== */
 
-    // Get the element where you want to display the song details
-    const songDetailsElement = document.getElementById('song-details');
+    menuButton.addEventListener("click", function () {
 
-    // Update the inner HTML of the element with song details
-    songDetailsElement.innerHTML = `
-    <img  src="/poster/${poster}">
-        <div class="inbox">
-          <h2>Title: ${title}</h2>
-        <p>Artist: ${artist}</p>
-        </div>
-    `;
-}
+      sidebar.classList.toggle("mobile-open");
 
+      const icon = menuButton.querySelector("i");
 
-    document.querySelector("#play").addEventListener("click", function () {
-    var playlist = document.querySelector("#playlist");
-    if (playlist.style.display === "none" || playlist.style.display === "") {
-        playlist.style.display = "block";
-    } else {
-        playlist.style.display = "none";
-    }
-});
+      if (sidebar.classList.contains("mobile-open")) {
 
-document.querySelector("#cplaylist").addEventListener('keyup', function(event) {
-        // Check if the "Enter" key is pressed
-        if (event.key === 'Enter') {
-            // Simulate a click on the search button
-            document.querySelector("#cbtn").click();
-        }
+        icon.className = "ri-close-line";
+
+      } else {
+
+        icon.className = "ri-menu-4-line";
+
+      }
+
     });
 
 
+    /* ==========================================
+       CLOSE MOBILE MENU WHEN LINK CLICKED
+    ========================================== */
 
-  
+    document.querySelectorAll(".left a").forEach(function(link) {
+
+      link.addEventListener("click", function() {
+
+        sidebar.classList.remove("mobile-open");
+
+        const icon = menuButton.querySelector("i");
+
+        icon.className = "ri-menu-4-line";
+
+      });
+
+    });
 
 
-    
+    /* ==========================================
+       CREATE PLAYLIST
+    ========================================== */
+
+    playlistButton.addEventListener("click", function () {
+
+      playlistForm.classList.toggle("show");
+
+      if (playlistForm.classList.contains("show")) {
+
+        setTimeout(function() {
+
+          playlistInput.focus();
+
+        }, 100);
+
+      }
+
+    });
+
+
+    /* ==========================================
+       LIBRARY ADD BUTTON
+    ========================================== */
+
+    const libraryAdd = document.querySelector("#libraryAdd");
+
+    if (libraryAdd) {
+
+      libraryAdd.addEventListener("click", function() {
+
+        playlistForm.classList.add("show");
+
+        playlistInput.focus();
+
+      });
+
+    }
+
+
+    /* ==========================================
+       ENTER CREATE PLAYLIST
+    ========================================== */
+
+    playlistInput.addEventListener("keyup", function(event) {
+
+      if (event.key === "Enter") {
+
+        createButton.click();
+
+      }
+
+    });
+
+
+    /* ==========================================
+       SONG PLAY FUNCTION
+    ========================================== */
+
+    function songCardClicked(
+      filename,
+      title,
+      artist,
+      poster
+    ) {
+
+      audio.src = "/stream/" + filename;
+
+      audio.play();
+
+      playerTitle.textContent = title;
+
+      playerArtist.textContent = artist;
+
+      playerPoster.src = "/poster/" + poster;
+
+
+      /* Sidebar current song */
+
+      const songDetails = document.querySelector("#song-details");
+
+      songDetails.innerHTML = `
+
+        <div class="current-artwork">
+
+          <img
+            src="/poster/${poster}"
+            alt="${title}"
+          >
+
+          <div class="artwork-overlay">
+            <i class="ri-equalizer-2-fill"></i>
+          </div>
+
+        </div>
+
+        <div class="inbox">
+
+          <h2>${title}</h2>
+
+          <p>${artist}</p>
+
+        </div>
+
+      `;
+
+
+      /* Change play icon */
+
+      mainPlay.innerHTML =
+        '<i class="ri-pause-fill"></i>';
+
+    }
+
+
+    /* ==========================================
+       PLAY / PAUSE
+    ========================================== */
+
+    mainPlay.addEventListener("click", function() {
+
+      if (!audio.src) return;
+
+      if (audio.paused) {
+
+        audio.play();
+
+        mainPlay.innerHTML =
+          '<i class="ri-pause-fill"></i>';
+
+      } else {
+
+        audio.pause();
+
+        mainPlay.innerHTML =
+          '<i class="ri-play-fill"></i>';
+
+      }
+
+    });
+
+
+    /* ==========================================
+       AUDIO PLAY
+    ========================================== */
+
+    audio.addEventListener("play", function() {
+
+      mainPlay.innerHTML =
+        '<i class="ri-pause-fill"></i>';
+
+    });
+
+
+    /* ==========================================
+       AUDIO PAUSE
+    ========================================== */
+
+    audio.addEventListener("pause", function() {
+
+      mainPlay.innerHTML =
+        '<i class="ri-play-fill"></i>';
+
+    });
+
+
+    /* ==========================================
+       AUDIO TIME
+    ========================================== */
+
+    audio.addEventListener("timeupdate", function() {
+
+      if (!audio.duration) return;
+
+      const percent =
+        (audio.currentTime / audio.duration) * 100;
+
+      progress.value = percent;
+
+      currentTime.textContent =
+        formatTime(audio.currentTime);
+
+    });
+
+
+    /* ==========================================
+       AUDIO LOADED
+    ========================================== */
+
+    audio.addEventListener("loadedmetadata", function() {
+
+      duration.textContent =
+        formatTime(audio.duration);
+
+    });
+
+
+    /* ==========================================
+       PROGRESS CONTROL
+    ========================================== */
+
+    progress.addEventListener("input", function() {
+
+      if (!audio.duration) return;
+
+      audio.currentTime =
+        (progress.value / 100) * audio.duration;
+
+    });
+
+
+    /* ==========================================
+       VOLUME
+    ========================================== */
+
+    volume.addEventListener("input", function() {
+
+      audio.volume = volume.value;
+
+    });
+
+
+    /* ==========================================
+       FORMAT TIME
+    ========================================== */
+
+    function formatTime(seconds) {
+
+      if (isNaN(seconds)) return "0:00";
+
+      const minutes =
+        Math.floor(seconds / 60);
+
+      const remainingSeconds =
+        Math.floor(seconds % 60);
+
+      return (
+        minutes +
+        ":" +
+        String(remainingSeconds).padStart(2, "0")
+      );
+
+    }
+
+
+    /* ==========================================
+       AUTO CLOSE PLAYLIST
+    ========================================== */
+
+    document.addEventListener("click", function(event) {
+
+      if (
+        playlistForm.classList.contains("show") &&
+        !playlistForm.contains(event.target) &&
+        !playlistButton.contains(event.target) &&
+        !libraryAdd?.contains(event.target)
+      ) {
+
+        playlistForm.classList.remove("show");
+
+      }
+
+    });
+
   </script>
+
 </body>
 </html>

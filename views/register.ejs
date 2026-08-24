@@ -3,185 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        html {
-	color: #eee;
-}
 
-* {
-	font-family: "Gotham Rounded Book", "sans-serif";
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
+    <title>Spotify Clone — Login</title>
 
-body {
-	width: 100%;
-	min-height: 560px;
-	height: 100vh;
-	display: grid;
-	place-content: center;
-	background: #eee;
-}
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
 
-section {
-	min-width: 450px;
-	min-height: 520px;
-	padding: 15px;
-	box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-	border-radius: 10px;
-	background: #2c2d31;
-}
-
-#logo {
-	justify-content: center;
-	display: flex;
-	align-items: center;
-	margin: 30px;
-}
-
-nav {
-	margin: 20px;
-	display: flex;
-	justify-content: center;
-}
-
-nav label {
-	text-transform: uppercase;
-	cursor: pointer;
-}
-
-nav label:first-child {
-	margin-right: 20px;
-}
-
-form {
-	padding-inline: 60px;
-	display: none;
-	flex-direction: column;
-}
-
-#SignIn:checked ~ section #SignInFormData {
-	display: flex;
-}
-
-#SignIn:checked ~ section nav label:first-child {
-	margin-bottom: -2px;
-	border-bottom: 2px solid #1ed760;
-}
-
-#SignUp:checked ~ section #SignUpFormData {
-	display: flex;
-}
-
-#SignUp:checked ~ section nav label:last-child {
-	margin-bottom: -2px;
-	border-bottom: 2px solid #1ed760;
-}
-
-input,
-button {
-	border-radius: 50px;
-	padding: 15px 20px;
-	margin-bottom: 15px;
-	border: none;
-	outline: none;
-	font-size: 16px;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-#button {
-	background: #1ed760;
-	text-transform: uppercase;
-	font-weight: bold;
-	color: #fff;
-	cursor: pointer;
-	margin-top: 5px;
-}
-
-form span {
-	margin-left: 20px;
-}
-
-form span label {
-	font-size: 14px;
-	text-transform: lowercase;
-}
-
-input[type="checkbox"] {
-	cursor: pointer;
-	accent-color: #3498db;
-}
-
-a {
-	color: #797a7e;
-	font-weight: bold;
-	text-decoration: none;
-	margin-top: 30px;
-	display: flex;
-	justify-content: center;
-	cursor: pointer;
-}
-@media (max-width:600px) {
-	body{
-		background-color: #000000;
-	}
-	section{
-		height: 100vh;
-		width: 100vw;
-		background-color: #474747;
-	}
-}
-
-    </style>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-<body>
-    <!-- para facilitar a transição entre telas e não precisar criar todo um scrip apenas para isso podemos alternar entre os forms de SignIn e SignUp com labels usando regras no css, isso deixa muito mais simples e prático! -->
 
-<link href="
-https://cdn.jsdelivr.net/npm/gotham-fonts@1.0.3/css/gotham-rounded.min.css
-" rel="stylesheet">
+<body class="auth-page">
 
-<input type="radio" name="optionScreen" id="SignIn" hidden checked>
-<input type="radio" name="optionScreen" id="SignUp" hidden>
+    <!-- Toggle -->
+    <input type="radio" name="optionScreen" id="SignIn" hidden checked>
+    <input type="radio" name="optionScreen" id="SignUp" hidden>
 
-<section>
-	<div id="logo">
-		<img src="https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-icon-marilyn-scott-0.png" alt="Spotify-Logo" width="50">
-		<h1>Spotify</h1>
-	</div>
+    <main class="auth-container">
 
-	<nav>
-		<label for="SignIn">Sign In</label>
-		<label for="SignUp">Sign Up</label>
-	</nav>
+        <!-- Background Glow -->
+        <div class="auth-glow glow-one"></div>
+        <div class="auth-glow glow-two"></div>
 
-	<form action="/login" id="SignInFormData" method="post">
-		<input type="text" id="username" name="username" placeholder="Username">
-		<input type="password" id="password" name="password" placeholder="Password">
-		<span>
-			<input type="checkbox" id="staySingedIn" checked>
-			<label for="staySingedIn">stay Signed In</label>
-		</span>
-		<!-- <button type="button" title="Sing In">Sing In</button> -->
-        <input id="button" type="submit" value="Sing In">
+        <section class="auth-card">
 
-		<a id="forgotPassword">forgot Password?</a>
-	</form>
+            <!-- Logo -->
+            <div class="auth-logo">
+                <div class="logo-icon">
+                    <i class="ri-spotify-fill"></i>
+                </div>
 
-	<form action="/register" id="SignUpFormData" method="post">
-		<input type="text" id="name" name="username" placeholder="Enter New Username">
-		<input type="email" id=email name="email" placeholder="E-mail">
-		<input type="password" id="password" name="password" placeholder="New Password">
-		<span>
-			<input type="checkbox" id="staySingedUp">
-			<label for="staySingedUp">stay Signed In</label>
-		</span>
-		<!-- <button type="button" title="Sing Up">Sing Up</button> -->
-        <input id="button" type="submit" value="Sing Up">
-	</form>
+                <div>
+                    <h1>Spotify</h1>
+                    <p>Music for everyone.</p>
+                </div>
+            </div>
 
-</section>
+            <!-- Tabs -->
+            <nav class="auth-tabs">
+                <label for="SignIn">
+                    Sign In
+                </label>
+
+                <label for="SignUp">
+                    Sign Up
+                </label>
+            </nav>
+
+
+            <!-- ================= SIGN IN ================= -->
+
+            <form
+                action="/login"
+                id="SignInFormData"
+                class="auth-form"
+                method="post"
+            >
+
+                <div class="form-heading">
+                    <h2>Welcome back</h2>
+                    <p>Sign in to continue listening.</p>
+                </div>
+
+
+                <!-- Username -->
+
+                <div class="input-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="ri-user-3-line"></i>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="ri-lock-2-line"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="form-options">
+
+                    <label class="check-option">
+
+                        <input
+                            type="checkbox"
+                            id="staySingedIn"
+                            checked
+                        >
+
+                        <span class="custom-check"></span>
+
+                        <span>Stay signed in</span>
+
+                    </label>
+
+                    <a href="#">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- Submit -->
+
+                <button
+                    class="auth-submit"
+                    type="submit"
+                >
+
+                    <span>Sign In</span>
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- ================= SIGN UP ================= -->
+
+            <form
+                action="/register"
+                id="SignUpFormData"
+                class="auth-form"
+                method="post"
+            >
+
+                <div class="form-heading">
+                    <h2>Create your account</h2>
+                    <p>Join and start listening to your favorite music.</p>
+                </div>
+
+
+                <!-- Username -->
+
+                <div class="input-group">
+
+                    <label for="signup-name">
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="ri-user-3-line"></i>
+
+                        <input
+                            type="text"
+                            id="signup-name"
+                            name="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="ri-mail-line"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="signup-password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="ri-lock-2-line"></i>
+
+                        <input
+                            type="password"
+                            id="signup-password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="form-options">
+
+                    <label class="check-option">
+
+                        <input
+                            type="checkbox"
+                            id="staySingedUp"
+                        >
+
+                        <span class="custom-check"></span>
+
+                        <span>Stay signed in</span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Submit -->
+
+                <button
+                    class="auth-submit"
+                    type="submit"
+                >
+
+                    <span>Create Account</span>
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- Footer -->
+
+            <div class="auth-footer">
+
+                <i class="ri-music-2-fill"></i>
+
+                <span>Listen. Discover. Repeat.</span>
+
+            </div>
+
+        </section>
+
+    </main>
+
 </body>
 </html>
